@@ -56,4 +56,28 @@ describe('sequalize-practice routes', () => {
         );
       });
   });
+
+  it('gets a player by id using GET', () => {
+    // add a player to the database
+    // Player.create({ name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] });
+
+    Player.bulkCreate([
+      { name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] },
+      { name: 'Carli Lloyd', careerGoals: 124, teams: ['Team USA', 'Gotham FC'] }
+    ]);
+
+    // get player 1
+    return request(app)
+      .get('/api/v1/players/1')
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(Number),
+          name: 'Alex Morgan',
+          careerGoals: 108,
+          teams: ['Team USA', 'Orlando Pride'],
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String)
+        });
+      });
+  });
 });
