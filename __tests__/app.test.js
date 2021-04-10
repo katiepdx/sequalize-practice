@@ -6,19 +6,38 @@ const Player = require('../lib/models/Player');
 describe('sequalize-practice routes', () => {
   beforeEach(() => {
     // drops tables before each test
-    return sequelizeDb.sync({ force: true });
+    return sequelizeDb.sync({ force: true })
+      // then seeds db with two players
+      .then(() => {
+        Player.bulkCreate([
+          {
+            name: 'Alex Morgan',
+            careerGoals: 108,
+            teams: ['Team USA', 'Orlando Pride']
+          },
+          {
+            name: 'Carli Lloyd',
+            careerGoals: 124,
+            teams: ['Team USA', 'Gotham FC']
+          }
+        ]);
+      });
   });
 
   it('creates a player using POST', () => {
     return request(app)
       .post('/api/v1/players')
-      .send({ name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] })
+      .send({
+        name: 'Megan Rapinoe',
+        careerGoals: 57,
+        teams: ['Team USA', 'OL Reign']
+      })
       .then(res => {
         expect(res.body).toEqual({
-          id: 1,
-          name: 'Alex Morgan',
-          careerGoals: 108,
-          teams: ['Team USA', 'Orlando Pride'],
+          id: 3,
+          name: 'Megan Rapinoe',
+          careerGoals: 57,
+          teams: ['Team USA', 'OL Reign'],
           createdAt: expect.any(String),
           updatedAt: expect.any(String)
         });
@@ -26,11 +45,6 @@ describe('sequalize-practice routes', () => {
   });
 
   it('gets all players using GET', () => {
-    // bulkCreate (sequelize) - adds multiple items at a time 
-    Player.bulkCreate([
-      { name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] },
-      { name: 'Carli Lloyd', careerGoals: 124, teams: ['Team USA', 'Gotham FC'] }
-    ]);
     return request(app)
       .get('/api/v1/players')
       .then(res => {
@@ -58,14 +72,6 @@ describe('sequalize-practice routes', () => {
   });
 
   it('gets a player by id using GET', () => {
-    // add a player to the database
-    // Player.create({ name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] });
-
-    Player.bulkCreate([
-      { name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] },
-      { name: 'Carli Lloyd', careerGoals: 124, teams: ['Team USA', 'Gotham FC'] }
-    ]);
-
     // get player 1
     return request(app)
       .get('/api/v1/players/1')
@@ -82,9 +88,6 @@ describe('sequalize-practice routes', () => {
   });
 
   it('update a player using PUT', () => {
-    // create a player to update
-    Player.create({ name: 'Alex Morgan', careerGoals: 10, teams: ['Team USA', 'Orlando Pride'] });
-
     return request(app)
       .put('/api/v1/players/1')
       .send({
@@ -105,11 +108,6 @@ describe('sequalize-practice routes', () => {
   });
 
   it('delete a player by id', () => {
-    Player.bulkCreate([
-      { name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] },
-      { name: 'Carli Lloyd', careerGoals: 124, teams: ['Team USA', 'Gotham FC'] }
-    ]);
-
     return request(app)
       .delete('/api/v1/players/1')
       .then(res => {
