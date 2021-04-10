@@ -103,4 +103,17 @@ describe('sequalize-practice routes', () => {
         });
       });
   });
+
+  it('delete a player by id', () => {
+    Player.bulkCreate([
+      { name: 'Alex Morgan', careerGoals: 108, teams: ['Team USA', 'Orlando Pride'] },
+      { name: 'Carli Lloyd', careerGoals: 124, teams: ['Team USA', 'Gotham FC'] }
+    ]);
+
+    return request(app)
+      .delete('/api/v1/players/1')
+      .then(res => {
+        expect(res.body.message).toEqual('Delete complete');
+      });
+  });
 });
