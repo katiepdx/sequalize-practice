@@ -80,4 +80,27 @@ describe('sequalize-practice routes', () => {
         });
       });
   });
+
+  it('update a player using PUT', () => {
+    // create a player to update
+    Player.create({ name: 'Alex Morgan', careerGoals: 10, teams: ['Team USA', 'Orlando Pride'] });
+
+    return request(app)
+      .put('/api/v1/players/1')
+      .send({
+        name: 'Alex Morgan',
+        careerGoals: 108,
+        teams: ['Team USA', 'Orlando Pride']
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          id: expect.any(Number),
+          name: 'Alex Morgan',
+          careerGoals: 108,
+          teams: ['Team USA', 'Orlando Pride'],
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String)
+        });
+      });
+  });
 });
