@@ -12,13 +12,18 @@ describe('sequalize-practice routes', () => {
         Player.bulkCreate([
           {
             name: 'Alex Morgan',
-            careerGoals: 108,
-            teams: ['Team USA', 'Orlando Pride']
+            position: 'forward',
+            goals: 108,
           },
           {
             name: 'Carli Lloyd',
-            careerGoals: 124,
-            teams: ['Team USA', 'Gotham FC']
+            position: 'forward',
+            goals: 124,
+          },
+          {
+            name: 'Crystal Dunn',
+            position: 'defender',
+            goals: 24,
           }
         ]);
       });
@@ -29,15 +34,15 @@ describe('sequalize-practice routes', () => {
       .post('/api/v1/players')
       .send({
         name: 'Megan Rapinoe',
-        careerGoals: 57,
-        teams: ['Team USA', 'OL Reign']
+        position: 'forward',
+        goals: 57,
       })
       .then(res => {
         expect(res.body).toEqual({
-          id: 3,
+          id: expect.any(Number),
           name: 'Megan Rapinoe',
-          careerGoals: 57,
-          teams: ['Team USA', 'OL Reign'],
+          position: 'forward',
+          goals: 57,
           createdAt: expect.any(String),
           updatedAt: expect.any(String)
         });
@@ -53,16 +58,24 @@ describe('sequalize-practice routes', () => {
             {
               id: expect.any(Number),
               name: 'Alex Morgan',
-              careerGoals: 108,
-              teams: ['Team USA', 'Orlando Pride'],
+              position: 'forward',
+              goals: 108,
               createdAt: expect.any(String),
               updatedAt: expect.any(String)
             },
             {
               id: expect.any(Number),
               name: 'Carli Lloyd',
-              careerGoals: 124,
-              teams: ['Team USA', 'Gotham FC'],
+              position: 'forward',
+              goals: 124,
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String)
+            },
+            {
+              id: expect.any(Number),
+              name: 'Crystal Dunn',
+              position: 'defender',
+              goals: 24,
               createdAt: expect.any(String),
               updatedAt: expect.any(String)
             }
@@ -79,8 +92,8 @@ describe('sequalize-practice routes', () => {
         expect(res.body).toEqual({
           id: expect.any(Number),
           name: 'Alex Morgan',
-          careerGoals: 108,
-          teams: ['Team USA', 'Orlando Pride'],
+          position: 'forward',
+          goals: 108,
           createdAt: expect.any(String),
           updatedAt: expect.any(String)
         });
@@ -92,15 +105,15 @@ describe('sequalize-practice routes', () => {
       .put('/api/v1/players/1')
       .send({
         name: 'Alex Morgan',
-        careerGoals: 108,
-        teams: ['Team USA', 'Orlando Pride']
+        position: 'forward',
+        goals: 108,
       })
       .then(res => {
         expect(res.body).toEqual({
           id: expect.any(Number),
           name: 'Alex Morgan',
-          careerGoals: 108,
-          teams: ['Team USA', 'Orlando Pride'],
+          position: 'forward',
+          goals: 108,
           createdAt: expect.any(String),
           updatedAt: expect.any(String)
         });
